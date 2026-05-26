@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="d8dbed14dc2c4aaaa31ac805cec8212d" Name="Diagram1">
+        <EntityTypeShape EntityType="VladModel.Category" Width="1.5" PointX="0.75" PointY="2.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="VladModel.Orders" Width="1.5" PointX="3" PointY="15.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="VladModel.PickUpPoint" Width="1.5" PointX="0.75" PointY="13.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="VladModel.ProducerId" Width="1.5" PointX="0.75" PointY="5.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="VladModel.ProducInOrder" Width="1.5" PointX="5.25" PointY="2.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="VladModel.Product" Width="1.5" PointX="3" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="VladModel.ProviderId" Width="1.5" PointX="0.75" PointY="7.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="VladModel.Role" Width="1.5" PointX="1.5" PointY="21.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="VladModel.Status" Width="1.5" PointX="0.75" PointY="16" IsExpanded="true" />
+        <EntityTypeShape EntityType="VladModel.sysdiagrams" Width="1.5" PointX="5.75" PointY="5.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="VladModel.Unit" Width="1.5" PointX="0.75" PointY="10.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="VladModel.Users" Width="1.5" PointX="0.75" PointY="18.375" IsExpanded="true" />
+        <AssociationConnector Association="VladModel.FK_Product_Category" ManuallyRouted="false" />
+        <AssociationConnector Association="VladModel.FK_Order_PickUpPoint" ManuallyRouted="false" />
+        <AssociationConnector Association="VladModel.FK_Order_Status" ManuallyRouted="false" />
+        <AssociationConnector Association="VladModel.FK_Order_User" ManuallyRouted="false" />
+        <AssociationConnector Association="VladModel.FK_ProducInOrder_Order" ManuallyRouted="false" />
+        <AssociationConnector Association="VladModel.FK_Product_ProducerId" ManuallyRouted="false" />
+        <AssociationConnector Association="VladModel.FK_ProducInOrder_Product" ManuallyRouted="false" />
+        <AssociationConnector Association="VladModel.FK_Product_ProviderId" ManuallyRouted="false" />
+        <AssociationConnector Association="VladModel.FK_Product_Unit" ManuallyRouted="false" />
+        <AssociationConnector Association="VladModel.FK_User_Role" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
