@@ -1,0 +1,183 @@
+﻿USE [Vlad];
+GO
+
+-- =============================================
+-- Создание таблиц
+-- =============================================
+
+-- Таблица категорий товаров
+CREATE TABLE [dbo].[Category] (
+    [Id]   INT           NOT NULL,
+    [Name] NVARCHAR(50)  NOT NULL,
+    CONSTRAINT [PK_Category] PRIMARY KEY CLUSTERED ([Id] ASC)
+);
+GO
+
+-- Таблица статусов заказов
+CREATE TABLE [dbo].[Status] (
+    [Id]   INT           NOT NULL,
+    [Name] NVARCHAR(50)  NOT NULL,
+    CONSTRAINT [PK_Status] PRIMARY KEY CLUSTERED ([Id] ASC)
+);
+GO
+
+-- Таблица ролей пользователей
+CREATE TABLE [dbo].[Role] (
+    [Id]   INT           NOT NULL,
+    [Name] NVARCHAR(50)  NULL,
+    CONSTRAINT [PK_Role] PRIMARY KEY CLUSTERED ([Id] ASC)
+);
+GO
+
+-- Таблица единиц измерения
+CREATE TABLE [dbo].[Unit] (
+    [Id]   INT           NOT NULL,
+    [Name] NVARCHAR(50)  NOT NULL,
+    CONSTRAINT [PK_Unit] PRIMARY KEY CLUSTERED ([Id] ASC)
+);
+GO
+
+-- Таблица производителей
+CREATE TABLE [dbo].[Producer] ( -- Исправлено с ProducerId
+    [Id]   INT           NOT NULL,
+    [Name] NVARCHAR(50)  NOT NULL,
+    CONSTRAINT [PK_Producer] PRIMARY KEY CLUSTERED ([Id] ASC) -- Имя ключа также изменено
+);
+GO
+
+-- Таблица поставщиков
+CREATE TABLE [dbo].[Provider] ( -- Исправлено с ProviderId
+    [Id]   INT           NOT NULL,
+    [Name] NVARCHAR(50)  NOT NULL,
+    CONSTRAINT [PK_Provider] PRIMARY KEY CLUSTERED ([Id] ASC) -- Имя ключа также изменено
+);
+GO
+
+-- Таблица пунктов выдачи
+CREATE TABLE [dbo].[PickUpPoint] (
+    [Id]        INT           NOT NULL,
+    [PointCode] NVARCHAR(50)  NOT NULL,
+    [City]      NVARCHAR(50)  NOT NULL,
+    [Street]    NVARCHAR(50)  NOT NULL,
+    [Building]  NVARCHAR(50)  NULL,
+    CONSTRAINT [PK_PickUpPoint] PRIMARY KEY CLUSTERED ([Id] ASC)
+);
+GO
+
+-- Таблица пользователей
+CREATE TABLE [dbo].[Users] (
+    [Id]         INT           NOT NULL,
+    [RoleId]     INT           NOT NULL,
+    [Name]       NVARCHAR(50)  NOT NULL,
+    [Surname]    NVARCHAR(50)  NOT NULL,
+    [Patronymic] NVARCHAR(50)  NOT NULL,
+    [Login]      NVARCHAR(50)  NOT NULL,
+    [Password]   NVARCHAR(50)  NOT NULL,
+    CONSTRAINT [PK_User] PRIMARY KEY CLUSTERED ([Id] ASC)
+);
+GO
+
+-- Таблица товаров
+CREATE TABLE [dbo].[Product] (
+    [Id]            INT           NOT NULL,
+    [Article]       NVARCHAR(50)  NULL,
+    [Name]          NVARCHAR(50)  NOT NULL,
+    [UnitId]        INT           NOT NULL,
+    [Price]         MONEY         NOT NULL,
+    [ProviderId]    INT           NOT NULL,
+    [ProducerId]    INT           NOT NULL,
+    [CategoryId]    INT           NOT NULL,
+    [Discount]      INT           NOT NULL,
+    [AmountInStock] INT           NOT NULL,
+    [Discription]   NVARCHAR(MAX) NOT NULL,
+    [Photo]         NVARCHAR(MAX) NULL,
+    CONSTRAINT [PK_Product] PRIMARY KEY CLUSTERED ([Id] ASC)
+);
+GO
+
+-- Таблица заказов
+CREATE TABLE [dbo].[Orders] (
+    [Id]            INT   NOT NULL,
+    [CreationDate]  DATE  NOT NULL,
+    [DeliveryDate]  DATE  NOT NULL,
+    [PickUpPointId] INT   NOT NULL,
+    [UserId]        INT   NOT NULL,
+    [Code]          INT   NOT NULL,
+    [StatusId]      INT   NOT NULL,
+    CONSTRAINT [PK_Order] PRIMARY KEY CLUSTERED ([Id] ASC)
+);
+GO
+
+-- Таблица связи товаров в заказе
+CREATE TABLE [dbo].[ProducInOrder] (
+    [Id]        INT NOT NULL,
+    [OrderId]   INT NOT NULL,
+    [ProductId] INT NOT NULL,
+    [Amount]    INT NOT NULL,
+    CONSTRAINT [PK_ProducInOrder] PRIMARY KEY CLUSTERED ([Id] ASC)
+);
+GO
+
+-- =============================================
+-- Внешние ключи
+-- =============================================
+
+-- Users -> Role
+ALTER TABLE [dbo].[Users]
+    ADD CONSTRAINT [FK_User_Role] FOREIGN KEY ([RoleId])
+    REFERENCES [dbo].[Role] ([Id]);
+GO
+
+-- Product -> Category
+ALTER TABLE [dbo].[Product]
+    ADD CONSTRAINT [FK_Product_Category] FOREIGN KEY ([CategoryId])
+    REFERENCES [dbo].[Category] ([Id]);
+GO
+
+-- Product -> Unit
+ALTER TABLE [dbo].[Product]
+    ADD CONSTRAINT [FK_Product_Unit] FOREIGN KEY ([UnitId])
+    REFERENCES [dbo].[Unit] ([Id]);
+GO
+
+-- Product -> Producer
+ALTER TABLE [dbo].[Product]
+    ADD CONSTRAINT [FK_Product_Producer] FOREIGN KEY ([ProducerId])
+    REFERENCES [dbo].[Producer] ([Id]); -- Ссылка обновлена
+GO
+
+-- Product -> Provider
+ALTER TABLE [dbo].[Product]
+    ADD CONSTRAINT [FK_Product_Provider] FOREIGN KEY ([ProviderId])
+    REFERENCES [dbo].[Provider] ([Id]); -- Ссылка обновлена
+GO
+
+-- Orders -> PickUpPoint
+ALTER TABLE [dbo].[Orders]
+    ADD CONSTRAINT [FK_Order_PickUpPoint] FOREIGN KEY ([PickUpPointId])
+    REFERENCES [dbo].[PickUpPoint] ([Id]);
+GO
+
+-- Orders -> Users
+ALTER TABLE [dbo].[Orders]
+    ADD CONSTRAINT [FK_Order_User] FOREIGN KEY ([UserId])
+    REFERENCES [dbo].[Users] ([Id]);
+GO
+
+-- Orders -> Status
+ALTER TABLE [dbo].[Orders]
+    ADD CONSTRAINT [FK_Order_Status] FOREIGN KEY ([StatusId])
+    REFERENCES [dbo].[Status] ([Id]);
+GO
+
+-- ProducInOrder -> Orders
+ALTER TABLE [dbo].[ProducInOrder]
+    ADD CONSTRAINT [FK_ProducInOrder_Order] FOREIGN KEY ([OrderId])
+    REFERENCES [dbo].[Orders] ([Id]);
+GO
+
+-- ProducInOrder -> Product
+ALTER TABLE [dbo].[ProducInOrder]
+    ADD CONSTRAINT [FK_ProducInOrder_Product] FOREIGN KEY ([ProductId])
+    REFERENCES [dbo].[Product] ([Id]);
+GO

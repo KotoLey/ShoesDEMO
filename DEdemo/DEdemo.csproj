@@ -203,6 +203,7 @@
       <DependentUpon>Model1.edmx</DependentUpon>
       <LastGenOutput>Model1.cs</LastGenOutput>
     </Content>
+    <Resource Include="Res\libraries.txt" />
     <Resource Include="trainers_shoes_5694.ico" />
     <Resource Include="Res\1.jpg" />
     <Resource Include="Res\10.jpg" />
